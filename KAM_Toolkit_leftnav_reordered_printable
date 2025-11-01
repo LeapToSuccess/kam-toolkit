@@ -714,5 +714,57 @@
   });
 })();
 </script>
+<!-- 🔥 Firebase Real-Time Collaboration -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+<script>
+ // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAhAczxwKAG4An1zHdcVQcjCXp2YHpYGfQ",
+  authDomain: "kam-workshop.firebaseapp.com",
+  projectId: "kam-workshop",
+  storageBucket: "kam-workshop.firebasestorage.app",
+  messagingSenderId: "183738192679",
+  appId: "1:183738192679:web:36ff16b43e7074dbf08f02"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db  = firebase.firestore();
+
+  const p = new URLSearchParams(location.search);
+  const team = (p.get('team') || 'T1').toUpperCase();
+  const role = (p.get('role') || 'participant').toLowerCase();
+  const docRef = db.collection('workspaces').doc(`${team}-${role}`);
+
+  let pushTimer;
+  function pushNow(){
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(()=>{
+      const data = {};
+      document.querySelectorAll('textarea,input,select').forEach((el,i)=>{
+        const key = el.name || el.id || ('el'+i);
+        data[key] = el.value;
+      });
+      docRef.set(data,{merge:true});
+    },250);
+  }
+  document.addEventListener('input',pushNow,true);
+  document.addEventListener('change',pushNow,true);
+
+  docRef.onSnapshot(snap=>{
+    const d = snap.data(); if(!d) return;
+    document.querySelectorAll('textarea,input,select').forEach((el,i)=>{
+      const key = el.name || el.id || ('el'+i);
+      if(d[key]!==undefined && el.value!==d[key]) el.value=d[key];
+    });
+  });
+</script>
 </body>
 </html>
