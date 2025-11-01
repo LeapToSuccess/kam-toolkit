@@ -1,716 +1,115 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Consolidated KAM &amp; Strategy Canvas Toolkit</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&amp;display=swap" rel="stylesheet"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KAM Toolkit — Team Workspace</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
 <style>
-    /* -------------------------------------------------------------------------- */
-    /* BASE STYLES - Unified for all Canvases                                     */
-    /* -------------------------------------------------------------------------- */
-    :root{
-        --primary:#B80D0D; /* LeapToSuccess red */
-        --ink:#111827; --muted:#6B7280; --bg:#0f172a; --card:#ffffff;
-        --amber:#f59e0b; --sea:#0ea5e9; --mint:#22c55e; --rose:#f43f5e;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-        font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-        margin:0; color:#e5e7eb;
-        background: radial-gradient(1200px 600px at 20% -10%, rgba(184,13,13,.35), transparent 40%), radial-gradient(900px 500px at 110% 10%, rgba(34,197,94,.20), transparent 35%), linear-gradient(180deg,#0b1220 0%, #0f172a 100%);
-    }
-    .shell{max-width:1200px;margin:28px auto;padding:0 20px}
-    .hero{
-        position:relative; border-radius:22px; padding:28px; overflow:hidden;
-        background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 20px 60px rgba(0,0,0,.35); backdrop-filter: blur(8px);
-        margin-bottom: 40px; 
-    }
-    .shine{position:absolute; inset:-2px; background: radial-gradient(600px 200px at 10% 0%, rgba(250,204,21,.14), transparent 60%), radial-gradient(400px 150px at 90% 10%, rgba(14,165,233,.18), transparent 65%); filter:saturate(120%); pointer-events:none}
-    .title{display:flex; align-items:center; gap:16px}
-    .logo{height:44px;width:44px;border-radius:12px; background: conic-gradient(from 120deg,var(--primary),#ef4444,#f59e0b,#22c55e,#0ea5e9,#818cf8,var(--primary)); box-shadow:0 6px 30px rgba(248,113,113,.35)}
-    h1{margin:0; font-weight:800; letter-spacing:.2px; font-size:28px}
-    .subtitle{margin:8px 0 0; color:#cbd5e1}
-    .grid{display:grid; gap:18px; grid-template-columns: repeat(12,1fr); margin-top:22px}
-    .card{grid-column: span 12; background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:18px 18px 12px; box-shadow:0 10px 30px rgba(0,0,0,.25); position:relative; margin-top:22px;}
-    @media (min-width:900px){ .card.half{grid-column: span 6} }
-    .card h2{margin:0 0 6px; font-size:16px; font-weight:800; color:#fff; letter-spacing:.25px}
-    .lead{margin:0 0 10px; color:#cbd5e1; font-size:13px}
-    .badge{position:absolute; top:12px; right:12px; font-size:11px; font-weight:800; padding:6px 9px; border-radius:999px; color:#fff; background:linear-gradient(90deg,var(--primary),#ef4444)}
-    textarea, input, select{width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#e5e7eb; border-radius:12px; padding:10px 12px; outline:none; font-size:13px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04)}
-    textarea{min-height:110px; resize:vertical}
-    .row{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
-    table{width:100%; border-collapse:collapse; border-spacing:0; margin-top:10px}
-    th,td{border:1px solid rgba(255,255,255,.12); padding:10px; font-size:13px}
-    th{background:rgba(255,255,255,.10); color:#fff; text-align:left; font-weight:700;}
-    .foot{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:22px; color:#cbd5e1}
-    .btn{appearance:none; border:0; padding:10px 14px; border-radius:12px; font-weight:800; color:#0b1220; background:linear-gradient(90deg,#fca5a5,#f59e0b); box-shadow:0 10px 24px rgba(245,158,11,.35); cursor:pointer}
-    .btn:active{transform:translateY(1px)}
-    .ghost{background:transparent; color:#e5e7eb; border:1px solid rgba(255,255,255,.18)}
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-    .box{border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02))}
-    .box h3{margin:0 0 6px;font-size:14px;font-weight:800;color:#fff}
-    .nav-bar{
-        position: sticky; top: 0; z-index: 1000;
-        background: rgba(11, 18, 32, 0.9);
-        backdrop-filter: blur(8px);
-        padding: 10px 20px;
-        margin: -28px -20px 28px -20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .nav-list{
-        max-width: 1200px; margin: 0 auto;
-        display: flex; gap: 10px; flex-wrap: wrap;
-        list-style: none; padding: 0;
-    }
-    .nav-list a{
-        text-decoration: none; color: #cbd5e1; font-size: 13px; font-weight: 600;
-        padding: 8px 12px; border-radius: 8px;
-        transition: all 0.2s; border: 1px solid transparent;
-        white-space: nowrap;
-    }
-    .nav-list a:hover{
-        background: rgba(184, 13, 13, 0.2); 
-        border-color: rgba(184, 13, 13, 0.5);
-    }
-    /* Specific styles for Canvas content that need to be unified */
-    .matrix{display:grid; grid-template-columns: repeat(2,1fr); gap:12px}
-    .quad{border-radius:14px; padding:12px; border:1px solid rgba(255,255,255,.12)}
-    .quad h3{margin:0 0 6px; font-size:14px; font-weight:800}
-    .q1{background:linear-gradient(180deg, rgba(34,197,94,.25), rgba(34,197,94,.05))}
-    .q2{background:linear-gradient(180deg, rgba(14,165,233,.25), rgba(14,165,233,.05))}
-    .q3{background:linear-gradient(180deg, rgba(245,158,11,.32), rgba(245,158,11,.06))}
-    .q4{background:linear-gradient(180deg, rgba(244,63,94,.28), rgba(244,63,94,.06))}
-    .four{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .panel{border-radius:14px;padding:12px 12px 10px;min-height:150px;border:1px solid rgba(255,255,255,.12)}
-    .panel h3{margin:0 0 6px;font-size:14px;font-weight:800}
-    .S{background:linear-gradient(180deg,rgba(34,197,94,.25),rgba(34,197,94,.05))}
-    .W{background:linear-gradient(180deg,rgba(244,63,94,.28),rgba(244,63,94,.06))}
-    .O{background:linear-gradient(180deg,rgba(14,165,233,.28),rgba(14,165,233,.06))}
-    .T{background:linear-gradient(180deg,rgba(245,158,11,.32),rgba(245,158,11,.06))}
-    .pestle{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-    .pbox{border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,.12);min-height:220px;display:flex;flex-direction:column}
-    .pbox .head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-    .pbox .letter{height:34px;width:34px;border-radius:8px;display:grid;place-items:center;font-weight:900;color:#0b1220}
-    .P .letter{background:#f87171} .E1 .letter{background:#fbbf24} .S .letter{background:#34d399}
-    .Tch .letter{background:#60a5fa} .L .letter{background:#a78bfa} .Env .letter{background:#f43f5e}
-    .rail{display:grid;grid-template-columns:1fr;gap:12px}
-    .pill{border-radius:999px;padding:14px 16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px}
-    .pill small{display:block;font-weight:600;opacity:.9}
-    .blue{background:linear-gradient(90deg,#0ea5e9,#2563eb)}
-    .red{background:linear-gradient(90deg,#b91c1c,#dc2626)}
-    .gray{background:linear-gradient(90deg,#6b7280,#374151)}
-    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}
-    .stage{border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));min-height:180px;text-align:center}
-    .stage h3{margin:0 0 6px;font-size:14px;font-weight:800;color:#fff}
-    .touchpoints{margin-top:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:10px}
-    .tp-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
-    .add-btn{margin-top:8px;padding:6px 10px;border-radius:8px;background:linear-gradient(90deg,#fca5a5,#f59e0b);color:#111827;font-weight:700;border:none;cursor:pointer}
-    .flow-step{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border-radius:14px; padding:14px; border:1px solid rgba(255,255,255,.12);}
-    .flow-step h4{margin:0 0 4px; color:#fff; font-weight:800;}
-    .levels{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px}
-    .lvl{border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,.12)}
-    .lvl h4{margin:0 0 6px;font-weight:800}
-    .lvl1{background:linear-gradient(180deg,rgba(191,219,254,.25),rgba(191,219,254,.05))}
-    .lvl2{background:linear-gradient(180deg,rgba(134,239,172,.25),rgba(134,239,172,.05))}
-    .lvl3{background:linear-gradient(180deg,rgba(244,114,182,.25),rgba(244,114,182,.05))}
-    .lvl4{background:linear-gradient(180deg,rgba(147,197,253,.25),rgba(147,197,253,.05))}
-
-    /* LEFT SIDEBAR (non-destructive, preserves palette) */
-    .side-nav{
-        position: fixed; left: 0; top: 0; bottom: 0;
-        width: 240px;
-        background: rgba(11, 18, 32, 0.9);
-        backdrop-filter: blur(8px);
-        border-right: 1px solid rgba(255,255,255,0.1);
-        padding: 16px 12px;
-        z-index: 1000;
-    }
-    .nav-vertical{ 
-        max-width: 100%;
-        display: flex; flex-direction: column; gap: 8px; 
-        margin: 0; padding: 0; list-style: none;
-    }
-    .nav-vertical li{ list-style: none; }
-    .nav-vertical a{ display: block; }
-    /* Do NOT push layout on desktop; centered .shell keeps same width and position. */
-    /* Mobile: toggle drawer */
-    .side-toggle{ display:none; position:fixed; right:16px; bottom:16px; z-index:1101; 
-        border:1px solid rgba(255,255,255,0.2); background: rgba(11,18,32,0.9); color:#cbd5e1;
-        border-radius:10px; padding:10px 12px; }
-    .side-scrim{ display:none; }
-    @media (max-width: 1280px){
-        .side-nav{ transform: translateX(-105%); transition: transform .28s ease; width: 78%; max-width: 320px; }
-        .side-nav.open{ transform: none; }
-        .side-toggle{ display:block; }
-        .side-scrim{ display:block; position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter: blur(2px); opacity:0; pointer-events:none; transition:opacity .28s ease; z-index:1100; }
-        .side-scrim.show{ opacity:1; pointer-events:auto; }
-        /* keep your content dimensions; no margin-left added */
-    }
-
-
-    /* Active link highlight: subtle red glow matching --primary */
-    .nav-vertical a.active{
-        background: rgba(184, 13, 13, 0.18);
-        border-color: rgba(184, 13, 13, 0.55);
-        box-shadow: 0 0 0 2px rgba(184, 13, 13, 0.25) inset;
-        color: #ffffff;
-    }
-    
-/* ---------- Print rules: print ONLY the selected section ---------- */
-@media print{
-  /* Ensure brand colors render */
-  *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
-  /* Hide everything by default */
-  body *{ visibility: hidden !important; }
-  /* Show only the selected section and its children */
-  body[data-print] section.hero{ display:none !important; }
-  body[data-print] section.hero#print-target{ display:block !important; }
-  body[data-print] section.hero#print-target, 
-  body[data-print] section.hero#print-target *{ visibility: visible !important; }
-  /* Place print target at top-left for clean page output */
-  section.hero#print-target{ position: absolute; left: 0; top: 0; right:0; margin:0; box-shadow:none; }
-  /* Keep cards intact across pages */
-  .card, .panel, .pbox, .box, .stage{ break-inside: avoid; page-break-inside: avoid; }
-  /* Textareas: expand and wrap content for printing */
-  textarea{ height:auto !important; overflow:visible !important; white-space:pre-wrap !important; }
-  /* Tables: allow wrapping */
-  th, td{ white-space:normal !important; }
-  /* Hide nav/sidebar, buttons */
-  .side-nav, .side-toggle, .side-scrim, .btn.ghost, .nav-bar{ display:none !important; }
-  /* Backgrounds */
-  body{ background:#0f172a !important; }
-  .hero{ background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03)) !important; }
-  .shine{ display:none !important; } /* optional, remove if you want shine printed */
-}
-
-    /* Role/Team banner and entry link */
-    .role-banner{
-        position:sticky; top:0; z-index:1200;
-        margin-bottom:10px;
-        padding:10px 14px; border-radius:12px;
-        background:linear-gradient(90deg, rgba(184,13,13,.35), rgba(14,165,233,.25));
-        border:1px solid rgba(255,255,255,.14);
-        color:#fff; display:flex; align-items:center; justify-content:space-between;
-        backdrop-filter: blur(6px);
-    }
-    .role-banner .info{font-weight:800; letter-spacing:.2px}
-    .role-banner .home{
-        text-decoration:none; color:#fff; font-weight:700; border:1px solid rgba(255,255,255,.25);
-        padding:6px 10px; border-radius:10px;
-    }
+  :root{ --primary:#B80D0D; --ink:#e5e7eb; --muted:#cbd5e1; }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{
+    font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin:0; color:var(--ink);
+    background: radial-gradient(1200px 600px at 20% -10%, rgba(184,13,13,.35), transparent 40%),
+                radial-gradient(900px 500px at 110% 10%, rgba(34,197,94,.20), transparent 35%),
+                linear-gradient(180deg,#0b1220 0%, #0f172a 100%);
+  }
+  .shell{max-width:1200px;margin:28px auto;padding:0 20px}
+  .role-banner{
+    position:sticky; top:0; z-index:1200; margin-bottom:10px; padding:10px 14px; border-radius:12px;
+    background:linear-gradient(90deg, rgba(184,13,13,.35), rgba(14,165,233,.25));
+    border:1px solid rgba(255,255,255,.14); color:#fff; display:flex; align-items:center; justify-content:space-between; backdrop-filter: blur(6px);
+  }
+  .role-banner .home{ text-decoration:none; color:#fff; font-weight:700; border:1px solid rgba(255,255,255,.25); padding:6px 10px; border-radius:10px; }
+  .hero{
+    position:relative; border-radius:22px; padding:28px; overflow:hidden;
+    background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 20px 60px rgba(0,0,0,.35);
+    backdrop-filter: blur(8px); margin-bottom: 40px;
+  }
+  .title{display:flex; align-items:center; gap:16px}
+  .logo{height:44px;width:44px;border-radius:12px; background: conic-gradient(from 120deg,var(--primary),#ef4444,#f59e0b,#22c55e,#0ea5e9,#818cf8,var(--primary)); box-shadow:0 6px 30px rgba(248,113,113,.35)}
+  h1{margin:0; font-weight:800; letter-spacing:.2px; font-size:28px}
+  .subtitle{margin:8px 0 0; color:var(--muted)}
+  .card{border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:18px; margin-top:18px; background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02))}
+  .foot{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:18px; color:#cbd5e1}
+  .btn{appearance:none; border:0; padding:10px 14px; border-radius:12px; font-weight:800; color:#0b1220; background:linear-gradient(90deg,#fca5a5,#f59e0b); box-shadow:0 10px 24px rgba(245,158,11,.35); cursor:pointer}
+  @media print{
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    body *{ visibility: hidden !important; }
+    body[data-print] section.hero{ display:none !important; }
+    body[data-print] section.hero#print-target{ display:block !important; }
+    body[data-print] section.hero#print-target, body[data-print] section.hero#print-target *{ visibility: visible !important; }
+    section.hero#print-target{ position: absolute; left: 0; top: 0; right:0; margin:0; box-shadow:none; }
+    textarea{ height:auto !important; overflow:visible !important; white-space:pre-wrap !important; }
+  }
+  textarea,input,select{width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--ink); border-radius:12px; padding:10px 12px; outline:none; font-size:13px}
+  textarea{min-height:110px; resize:vertical}
 </style>
 </head>
 <body>
-<button aria-controls="left-nav" aria-expanded="false" class="side-toggle">☰ Menu</button>
-<div class="side-scrim" id="side-scrim"></div>
-<div class="shell"><div class="role-banner"></div>
-<!-- Left Sidebar: same style as original top bar, vertical layout -->
-<aside aria-label="KAM Navigation" class="side-nav">
-<ul class="nav-list nav-vertical"><li><a href="#swot-pestle">SWOT &amp; PESTLE</a></li><li><a href="#stakeholder">Stakeholder Mapping</a></li><li><a href="#opportunities">Identifying High-Impact Opportunities</a></li><li><a href="#competitive-benchmarking">Competitive Benchmarking</a></li><li><a href="#customer-journey">Customer Journey Mapping</a></li><li><a href="#joint-value">Joint Value Alignment</a></li><li><a href="#qbr-planning">QBR &amp; Action Planning</a></li><li><a href="#differentiation">Differentiation &amp; Value Proposition</a></li><li><a href="#risk-register">Risk Management</a></li><li><a href="#value-chain">Porter's Value Chain</a></li></ul>
-</aside>
-<section class="hero" id="stakeholder">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div>
-<h1>Stakeholder Mapping – Strategic Canvas</h1>
-<p class="subtitle">Mirror look &amp; feel of your Miller Heiman / Account Profiling canvases. Use this to map power, support, and winning engagement plays.</p>
+<div class="shell">
+  <div class="role-banner">
+    <span class="info">Workspace: <strong>T1</strong> • Role: <strong>participant</strong></span>
+    <a class="home" href="KAM_Landing.html">⇦ Back to Teams</a>
+  </div>
+
+  <!-- SAMPLE SECTION (you can add the rest later) -->
+  <section class="hero" id="stakeholder">
+    <div class="title">
+      <div class="logo"></div>
+      <div>
+        <h1>Stakeholder Mapping – Strategic Canvas</h1>
+        <p class="subtitle">Map power, support, and engagement plays for your account.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Engagement notes</h2>
+      <textarea placeholder="Champions / Decision-makers / Allies / Blockers..."></textarea>
+    </div>
+    <div class="foot">
+      <div>LeapToSuccess © 2025 • Stakeholder Mapping Canvas</div>
+      <div><button class="btn" data-print-section="stakeholder">Print / Save this Section</button></div>
+    </div>
+  </section>
 </div>
-</div>
-<div class="grid">
-<article class="card half">
-<span class="badge">1 • Power–Support Matrix</span>
-<h2>Power vs. Support</h2>
-<p class="lead">Place stakeholders by <em>influence</em> and <em>support</em>, then define moves.</p>
-<div class="matrix">
-<div class="quad q1"><h3>Champions — High Power / High Support</h3><textarea placeholder="Who are your executive sponsors? How do we arm them with wins, proof, and airtime?"></textarea></div>
-<div class="quad q2"><h3>Key Decision‑Makers — High Power / Low Support</h3><textarea placeholder="What objections matter? Which ROI + risk messages persuade? Who influences them?"></textarea></div>
-<div class="quad q3"><h3>Influencers / Allies — Low Power / High Support</h3><textarea placeholder="Who can mobilize consensus? What updates/assets keep them active?"></textarea></div>
-<div class="quad q4"><h3>Blockers — Low Power / Low Support</h3><textarea placeholder="What’s their underlying worry? How do we neutralize/mitigate without escalation?"></textarea></div>
-</div>
-</article>
-<article class="card half">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Engagement Plan</span>
-<h2>Stakeholder Engagement Table</h2>
-<p class="lead">Document influence, support level, and the specific plays you’ll run.</p>
-<table>
-<thead><tr><th>Name</th><th>Role</th><th>Influence</th><th>Support</th><th>Engagement Strategy</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="e.g., Sarah Chen"/></td><td><input placeholder="CFO"/></td><td><input placeholder="High/Med/Low"/></td><td><input placeholder="High/Neutral/Low"/></td><td><input placeholder="e.g., ROI narrative; cost/benefit model; exec 1:1"/></td></tr>
-<tr><td><input placeholder="e.g., Mike Rodriguez"/></td><td><input placeholder="IT Director"/></td><td><input placeholder="Medium"/></td><td><input placeholder="High"/></td><td><input placeholder="Leverage as internal champion; pilot ownership"/></td></tr>
-<tr><td><input placeholder="e.g., Jennifer Park"/></td><td><input placeholder="Operations VP"/></td><td><input placeholder="High"/></td><td><input placeholder="Low"/></td><td><input placeholder="Address operational risks; site visit; success criteria"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: Who has budget authority? Who shapes consensus? Where are hidden vetoes? What cadence and artifacts (briefs, POVs, pilots) will move each person?" style="margin-top:10px"></textarea>
-</article>
-</div>
-<div class="grid">
-<article class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Action Planning</span>
-<h2>Plays &amp; Next Steps</h2>
-<div class="row"><input placeholder="Next Step (e.g., CFO ROI session)"/><input placeholder="Owner • Due Date"/></div>
-<textarea placeholder="Success measures, risks, and dependencies..." style="margin-top:10px"></textarea>
-</article>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Stakeholder Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="stakeholder">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="kam-competitors">
-<div id="opportunities"></div>
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div>
-<h1>Key Account Canvas — Competitor Analysis • Goal Discovery • Pain Excavation</h1>
-<p class="subtitle">Leading questions included for fast, structured team work during workshops.</p>
-</div>
-</div>
-<div class="section card">
-<span class="badge">Part 1 • Competitor Analysis</span>
-<h2>Competitive Intelligence Framework</h2>
-<p class="lead">Know the landscape • Benchmark strengths/weaknesses • Position your unique value</p>
-<div style="border-left:3px solid rgba(255,255,255,.35); padding:12px 12px; color:#e5e7eb; background:rgba(255,255,255,.04); border-radius:12px">Understanding your client's competitive landscape is crucial for positioning effectively. Use the table to capture what matters and how you'll win.</div>
-<div style="display:grid;grid-template-columns:220px 1fr 1fr 1fr;gap:8px;margin-top:8px">
-<div style="font-size:11px;color:#cbd5e1">Competitor</div><div style="font-size:11px;color:#cbd5e1">Market Share / Reach</div><div style="font-size:11px;color:#cbd5e1">Key Strengths</div><div style="font-size:11px;color:#cbd5e1">Vulnerabilities</div>
-<div style="display:contents"><input placeholder="e.g., Primary Rival A"/><input placeholder="e.g., 25% or dominant in 3 regions"/><input placeholder="e.g., price leadership; broad distribution"/><input placeholder="e.g., limited innovation; aging infra"/></div>
-<div style="display:contents"><input placeholder="e.g., Disruptor B"/><input placeholder="e.g., 8%; fast in e‑commerce"/><input placeholder="e.g., strong tech platform; agile ops"/><input placeholder="e.g., limited capital; narrow focus"/></div>
-<div style="display:contents"><input placeholder="e.g., Industry Giant C"/><input placeholder="e.g., 35%; global"/><input placeholder="e.g., scale advantages; global reach"/><input placeholder="e.g., slow decision‑making; high overhead"/></div>
-</div>
-<textarea placeholder="Leading questions: Who else serves this customer? Where do they outperform us and why? What switching costs lock the client in? What narrative differentiates us for THIS account? What proof can we show in 30 days?" style="margin-top:10px"></textarea>
-</div>
-<div class="section card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">Part 2 • Goal Discovery</span>
-<h2>The Goal Discovery Process</h2>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px">
-<div class="pbox"><h3>Financial Objectives</h3><textarea placeholder="Leading questions: What revenue/profit targets are explicit? Which products or segments carry the growth thesis? What ROI threshold must we meet?"></textarea></div>
-<div class="pbox"><h3>Operational Excellence</h3><textarea placeholder="What efficiency or CX metrics matter (OTIF, returns, NPS)? Where are bottlenecks today? Where can we automate?"></textarea></div>
-<div class="pbox"><h3>Strategic Initiatives</h3><textarea placeholder="Which expansion bets (geographies, channels, SKUs) are most time‑sensitive? What dependencies exist?"></textarea></div>
-<div class="pbox"><h3>Cultural Aspirations</h3><textarea placeholder="What values or brand promises guide decisions? Where can we create mutual value beyond discounts?"></textarea></div>
-</div>
-<textarea placeholder="Conversation starters: Which executive owns this goal? What would success look like by quarter? Which risks block success and how can we de‑risk quickly with a pilot?" style="margin-top:10px"></textarea>
-</div>
-<div class="section card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">Part 3 • Pain Point Excavation</span>
-<h2>From Symptoms to Strategic Implications</h2>
-<div class="levels">
-<div class="lvl lvl1"><h4>1 • Symptoms</h4><textarea placeholder="What visible issues do stakeholders mention? Where do delays, errors, or rework show up?"></textarea></div>
-<div class="lvl lvl2"><h4>2 • Surface Problems</h4><textarea placeholder="What are the immediate causes? Which teams feel the pain daily?"></textarea></div>
-<div class="lvl lvl3"><h4>3 • Root Causes</h4><textarea placeholder="What systemic constraints or incentives drive the problem? What data disproves the obvious story?"></textarea></div>
-<div class="lvl lvl4"><h4>4 • Strategic Implications</h4><textarea placeholder="If unresolved, what is the long‑term business impact? Which executive‑level goals are threatened?"></textarea></div>
-</div>
-<textarea placeholder="Bridging question: Which pain, if solved, unlocks the most enterprise value AND differentiates us vs. competitors? What is the smallest proof‑of‑value we can run in 30–45 days?" style="margin-top:10px"></textarea>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • KAM Competitors, Goals &amp; Pain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="kam-competitors">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="differentiation">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Differentiating from Competitors – Value Proposition Canvas</h1><p class="subtitle">Pinpoint where you win: monitor the market, surface unique strengths, leverage relationship advantage, and map goals → solutions → measurable value.</p></div>
-</div>
-<div class="grid">
-<article class="card half">
-<span class="badge">1 • Advantage Levers</span>
-<h2>Competitive Intelligence • Unique Strengths • Relationship Advantage</h2>
-<div class="rail">
-<div class="pill blue">Competitive Intelligence <small>What moves, messages, pricing, and feedback matter this quarter?</small></div>
-<div class="pill red">Unique Strengths <small>Which capabilities are hard to copy? What proof demonstrates they’re real?</small></div>
-<div class="pill gray">Relationship Advantage <small>Where do trust, integration, or switching costs give us preference?</small></div>
-</div>
-<textarea placeholder="Notes &amp; insights: What positioning opportunities emerged? Which buyers care most? What quick wins can we publicize?" style="margin-top:10px"></textarea>
-</article>
-<article class="card half">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Value Proposition Mapping Tool</span>
-<h2>Map Customer Goals → Solutions → Measurable Value</h2>
-<table>
-<thead><tr><th>Customer Goal</th><th>Our Solution</th><th>Measurable Value</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="e.g., Reduce operational costs by 15%"/></td><td><input placeholder="e.g., Process automation platform"/></td><td><input placeholder="e.g., $2M annual savings via efficiency"/></td></tr>
-<tr><td><input placeholder="e.g., Improve customer satisfaction scores"/></td><td><input placeholder="e.g., Omnichannel support solution"/></td><td><input placeholder="e.g., +20% NPS, 30% faster resolution"/></td></tr>
-<tr><td><input placeholder="e.g., Accelerate time‑to‑market"/></td><td><input placeholder="e.g., Agile development methodology"/></td><td><input placeholder="e.g., 40% reduction in launch cycles"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: Which goals tie to executive KPIs? What baseline &amp; method will we use to measure value? What 30–45 day proof can we commit to?" style="margin-top:10px"></textarea>
-</article>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Positioning Narrative</span>
-<h2>Craft the Differentiation Story for THIS Account</h2>
-<p class="lead">Turn insights into a crisp narrative that sellers can repeat.</p>
-<textarea placeholder="Message builder: For [buyer], who needs [goal], our [capability] delivers [measurable outcome] because [proof]. Unlike [competitor], we [unique advantage]."></textarea>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Differentiation &amp; Value Proposition Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="differentiation">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="joint-value">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Joint Value Alignment – Strategic Canvas</h1><p class="subtitle">Build partnerships that drive mutual success through goal alignment, co-creation, and measurable impact.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Value Proposition Mapping</span>
-<h2>Connecting Capabilities to Client Priorities</h2>
-<p class="lead">Use this section to map your solutions directly to your client’s strategic goals and quantify impact.</p>
-<textarea placeholder="Leading questions: Which client priorities align best with our core solutions? Where can we accelerate results? What metrics define mutual success?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Co-Creation Opportunities</span>
-<h2>Collaborative Growth Pathways</h2>
-<p class="lead">Identify shared initiatives, pilots, and resource partnerships that create tangible business value.</p>
-<textarea placeholder="Leading questions: What joint projects or pilots can we co-develop? How can shared investment drive innovation or efficiency? What mutual KPIs define success?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Value Alignment Flow</span>
-<h2>Stages of Value Alignment</h2>
-<p class="lead">Work through each stage to deepen alignment and expand partnership value.</p>
-<div class="flow">
-<div class="flow-step"><h4>Client Objectives</h4><textarea placeholder="Understanding strategic priorities: What’s driving the client’s 3-year roadmap?"></textarea></div>
-<div class="flow-step"><h4>Solution Alignment</h4><textarea placeholder="Mapping capabilities to needs: How does our offer integrate into their workflow?"></textarea></div>
-<div class="flow-step"><h4>Value Creation</h4><textarea placeholder="Generating mutual benefit: What measurable impact can we demonstrate quickly?"></textarea></div>
-<div class="flow-step"><h4>Partnership Growth</h4><textarea placeholder="Expanding the strategic relationship: What additional areas can we scale together?"></textarea></div>
-</div>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Joint Value Alignment Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="joint-value">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="qbr-planning">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>QBR Performance &amp; Action Planning Canvas</h1><p class="subtitle">Combine Quarterly Business Review insights with structured action planning to sustain alignment, growth, and accountability.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Understanding the QBR</span>
-<h2>Quarterly Business Review Purpose</h2>
-<p class="lead">Clarify why the QBR matters and how it reinforces client partnerships.</p>
-<textarea placeholder="Leading questions: What’s the key objective of this QBR? Which metrics or milestones define progress? How do we align client and company goals in this session?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Typical QBR Structure</span>
-<h2>QBR Agenda Framework</h2>
-<p class="lead">Design your meeting flow for impact — include insights, value delivery, and forward planning.</p>
-<textarea placeholder="Leading questions: What’s the current status review? What value have we delivered since last quarter? What are the client’s next-quarter objectives?"></textarea>
-<table>
-<thead><tr><th>Agenda Item</th><th>Purpose</th><th>Owner</th><th>Duration</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="Performance Highlights"/></td><td><input placeholder="Show value delivered"/></td><td><input placeholder="e.g., KAM"/></td><td><input placeholder="10 min"/></td></tr>
-<tr><td><input placeholder="Client Feedback &amp; Insights"/></td><td><input placeholder="Capture expectations"/></td><td><input placeholder="Client Sponsor"/></td><td><input placeholder="10 min"/></td></tr>
-<tr><td><input placeholder="Next Quarter Roadmap"/></td><td><input placeholder="Plan growth initiatives"/></td><td><input placeholder="Both"/></td><td><input placeholder="15 min"/></td></tr>
-</tbody>
-</table>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Effective QBR Delivery Checklist</span>
-<h2>Execution Essentials</h2>
-<p class="lead">Ensure the QBR drives insight, accountability, and collaboration.</p>
-<div class="grid3">
-<div class="box"><h3>Preparation</h3><textarea placeholder="Have we gathered performance data, success stories, and ROI metrics?"></textarea></div>
-<div class="box"><h3>Engagement</h3><textarea placeholder="Are all stakeholders aligned to agenda and expected outcomes? Who leads each section?"></textarea></div>
-<div class="box"><h3>Follow-up</h3><textarea placeholder="How are action items tracked and communicated post-QBR? Who owns each follow-up?"></textarea></div>
-</div>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--amber),#facc15)">4 • Action Planning Map</span>
-<h2>Translating QBR Insights into Actions</h2>
-<p class="lead">Turn QBR discussions into clear, measurable action items.</p>
-<table>
-<thead><tr><th>Key Initiative</th><th>Owner</th><th>Timeline</th><th>Expected Outcome</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="e.g., Client ROI Dashboard Launch"/></td><td><input placeholder="KAM + Analytics Team"/></td><td><input placeholder="Q2"/></td><td><input placeholder="Enhanced transparency &amp; retention"/></td><td><input placeholder="In Progress"/></td></tr>
-<tr><td><input placeholder="e.g., Joint Innovation Workshop"/></td><td><input placeholder="Innovation Lead + Client"/></td><td><input placeholder="Q3"/></td><td><input placeholder="Identify 3 co-creation pilots"/></td><td><input placeholder="Planned"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: Which QBR takeaways require immediate action? How do we track and celebrate progress before the next QBR?" style="margin-top:10px"></textarea>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • QBR Performance &amp; Action Planning Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="qbr-planning">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="swot-pestle">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Key Account – SWOT &amp; PESTLE Canvas</h1><p class="subtitle">Single-page, workshop-ready canvas for teams to assess internal/external realities and plan moves.</p></div>
-</div>
-<div class="section card">
-<span class="badge">Part A • SWOT</span>
-<h2>SWOT Analysis – Key Account</h2>
-<div class="four">
-<div class="panel S"><h3>Strengths (Internal)</h3><textarea placeholder="Capabilities, assets, relationships, execution advantages..."></textarea></div>
-<div class="panel W"><h3>Weaknesses (Internal)</h3><textarea placeholder="Gaps, constraints, cost issues, service challenges..."></textarea></div>
-<div class="panel O"><h3>Opportunities (External)</h3><textarea placeholder="Customer initiatives, unmet needs, whitespace, growth bets..."></textarea></div>
-<div class="panel T"><h3>Threats (External)</h3><textarea placeholder="Competitive moves, regulatory shifts, macro risks..."></textarea></div>
-</div>
-</div>
-<div class="section card">
-<span class="badge">Part B • PESTLE</span>
-<h2>PESTLE Analysis – External Forces Shaping the Account</h2>
-<div class="pestle">
-<div class="pbox P"><div class="head"><div class="letter">P</div><strong>Political</strong></div><textarea placeholder="Political stability, trade policy, public sector priorities, Vision 2030 alignment..."></textarea></div>
-<div class="pbox E1"><div class="head"><div class="letter">E</div><strong>Economic</strong></div><textarea placeholder="Growth rates, inflation, FX, consumer spending, pricing pressure..."></textarea></div>
-<div class="pbox S"><div class="head"><div class="letter">S</div><strong>Social</strong></div><textarea placeholder="Demographics, lifestyle shifts, labor skills, health &amp; safety expectations..."></textarea></div>
-<div class="pbox Tch"><div class="head"><div class="letter">T</div><strong>Technological</strong></div><textarea placeholder="Automation, data/AI adoption, e‑commerce, infrastructure maturity..."></textarea></div>
-<div class="pbox L"><div class="head"><div class="letter">L</div><strong>Legal</strong></div><textarea placeholder="Regulations, contracts, compliance, labor law, H&amp;S, data privacy..."></textarea></div>
-<div class="pbox Env"><div class="head"><div class="letter">E</div><strong>Environmental</strong></div><textarea placeholder="Sustainability targets, climate risks, packaging, circular economy..."></textarea></div>
-</div>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • KAM SWOT &amp; PESTLE Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="swot-pestle">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="risk-register">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Risk Register &amp; Mitigation Canvas</h1><p class="subtitle">Identify, assess, and mitigate key risks through structured planning, ownership, and follow-up actions.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Risk Register</span>
-<h2>Top 3 Risks &amp; Mitigation Plans</h2>
-<p class="lead">Document, evaluate, and assign accountability for risks impacting your key accounts.</p>
-<table>
-<thead><tr><th>Risk Description</th><th>Impact</th><th>Probability</th><th>Mitigation Plan</th><th>Owner</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="e.g., Budget reduction by 25%"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="e.g., Develop phased implementation options"/></td><td><input placeholder="e.g., Account Manager"/></td></tr>
-<tr><td><input placeholder="e.g., CTO departure next quarter"/></td><td><input placeholder="Medium/High/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="e.g., Build relationships with deputy and team"/></td><td><input placeholder="e.g., Technical Lead"/></td></tr>
-<tr><td><input placeholder="e.g., New competitor entering market"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="e.g., Strengthen value proposition messaging"/></td><td><input placeholder="e.g., Sales Manager"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: Which risks can derail this quarter’s goals? What signals or indicators should we monitor? How do we ensure mitigation plans are realistic and owned?" style="margin-top:10px"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Risk Analysis Framework</span>
-<h2>Risk Identification → Assessment → Mitigation</h2>
-<div class="grid3">
-<div class="box"><h3>Risk Identification</h3><p class="lead">Brainstorm potential risks across commercial, operational, and relationship categories.</p><textarea placeholder="List possible threats that could affect your account outcomes."></textarea></div>
-<div class="box"><h3>Impact Assessment</h3><p class="lead">Rate each risk on impact and probability to prioritize effectively.</p><textarea placeholder="Which risks are high impact and likely? Which can be monitored versus acted on?"></textarea></div>
-<div class="box"><h3>Mitigation Planning</h3><p class="lead">Define response plans, timelines, and owners for your top 3 risks.</p><textarea placeholder="Who owns mitigation? What resources and deadlines are required?"></textarea></div>
-</div>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Action Plan Tracker</span>
-<h2>Tracking Risk Resolution</h2>
-<p class="lead">Convert risk insights into actionable plans and ensure ongoing accountability.</p>
-<table>
-<thead><tr><th>Risk</th><th>Action Step</th><th>Owner</th><th>Due Date</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td><input placeholder="e.g., Budget cut"/></td><td><input placeholder="Re-scope project phases"/></td><td><input placeholder="Finance Lead"/></td><td><input placeholder="Q2"/></td><td><input placeholder="In Progress"/></td></tr>
-<tr><td><input placeholder="e.g., Key staff turnover"/></td><td><input placeholder="Cross-train team; update documentation"/></td><td><input placeholder="Ops Manager"/></td><td><input placeholder="Q3"/></td><td><input placeholder="Planned"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: How do we verify that mitigation efforts are effective? What follow-up cadence ensures continuous risk monitoring?" style="margin-top:10px"></textarea>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Risk Register &amp; Mitigation Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="risk-register">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="competitive-benchmarking">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Competitive Benchmarking Canvas</h1><p class="subtitle">Map your competitive landscape across key performance dimensions and identify differentiation opportunities.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Benchmarking Table</span>
-<h2>Competitor Comparison Matrix</h2>
-<p class="lead">Benchmark price, service quality, innovation, relationship depth, and brand strength.</p>
-<table>
-<thead>
-<tr><th>Competitor</th><th>Price Position</th><th>Service Quality</th><th>Innovation</th><th>Relationship Depth</th><th>Brand Strength</th></tr>
-</thead>
-<tbody>
-<tr><td><input placeholder="e.g., Competitor A"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td></tr>
-<tr><td><input placeholder="e.g., Competitor B"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td></tr>
-<tr><td><input placeholder="Your Company"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td><td><input placeholder="High/Medium/Low"/></td></tr>
-</tbody>
-</table>
-<textarea placeholder="Leading questions: Which performance dimensions create the biggest customer perception gap? What metrics or proof points validate your differentiation? Where do you underperform but can close the gap fast?" style="margin-top:10px"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Insight Areas</span>
-<h2>Competitive Insights</h2>
-<div class="grid3">
-<div class="box"><h3>Competitive Advantage</h3><p class="lead">Your strongest differentiation points where you outperform key competitors.</p><textarea placeholder="Where do we clearly outperform competitors? Which clients recognize this advantage?"></textarea></div>
-<div class="box"><h3>Competitive Parity</h3><p class="lead">Areas where you match competitor capabilities – table stakes for consideration.</p><textarea placeholder="What areas are at parity and must be maintained? How do we keep them from becoming weaknesses?"></textarea></div>
-<div class="box"><h3>Improvement Opportunities</h3><p class="lead">Gaps where competitors have an advantage – areas requiring strategic attention.</p><textarea placeholder="Which areas create risk or lost deals? What short-term and long-term actions fix these?"></textarea></div>
-</div>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Competitive Benchmarking Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="competitive-benchmarking">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="value-chain">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Porter's Value Chain – Strategic Canvas</h1><p class="subtitle">Map where your solutions deliver value along your client's operations using Porter's Value Chain framework.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Value Chain Overview</span>
-<h2>Understanding the Framework</h2>
-<p class="lead">Use this framework to locate where your offerings can maximize client impact. Reflect on activities that directly create or enable value.</p>
-<textarea placeholder="Leading questions: Where do our solutions intersect with client operations? Which activities directly influence end-customer outcomes? Where are the most significant value leaks today?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--sea),#38bdf8)">2 • Primary Activities</span>
-<h2>Primary Activities</h2>
-<p class="lead">Inbound logistics, operations, outbound logistics, marketing &amp; sales, and service — core processes that create direct customer value.</p>
-<textarea placeholder="Leading questions: Which primary activities depend on us most? Where do we reduce cost or improve performance? Which process owners should we engage to validate this?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">3 • Support Activities</span>
-<h2>Support Activities</h2>
-<p class="lead">Infrastructure, HR, technology development, and procurement — enabling systems that keep value creation efficient and scalable.</p>
-<textarea placeholder="Leading questions: How do our capabilities empower the client's internal systems? What new efficiencies or insights can we unlock in HR, technology, or procurement?"></textarea>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,var(--amber),#facc15)">4 • KAM Application</span>
-<h2>Applying the Model</h2>
-<p class="lead">Translate analysis into action — uncover opportunity zones for solution alignment, differentiation, and relationship strengthening.</p>
-<textarea placeholder="Leading questions: Which activity represents the biggest partnership potential? How can we align our value proposition across both primary and support functions? What internal story should the client tell about us after this discovery?"></textarea>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Porter's Value Chain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="value-chain">Print / Save this Section</button></div>
-</section>
-<section class="hero" id="customer-journey">
-<div class="shine"></div>
-<div class="title">
-<div class="logo"></div>
-<div><h1>Customer Journey Mapping – Interactive Canvas</h1><p class="subtitle">Visualize your customer journey, define key touchpoints, assign actions, and set timing for every stage.</p></div>
-</div>
-<div class="card">
-<span class="badge">1 • Journey Stages</span>
-<h2>Map Customer Experience Across 5 Key Stages</h2>
-<div class="flow">
-<div class="stage">
-<h3>Awareness</h3>
-<p class="lead">Position your brand as a thought leader through strategic insights and market guidance.</p>
-<div class="touchpoints" id="awareness"></div>
-<button class="add-btn" onclick="addTP('Awareness')">+ Add Touchpoint</button>
-</div>
-<div class="stage">
-<h3>Consideration</h3>
-<p class="lead">Build trust through consultative selling and tailored problem-solving.</p>
-<div class="touchpoints" id="consideration"></div>
-<button class="add-btn" onclick="addTP('Consideration')">+ Add Touchpoint</button>
-</div>
-<div class="stage">
-<h3>Purchase</h3>
-<p class="lead">Ensure seamless onboarding and client readiness from day one.</p>
-<div class="touchpoints" id="purchase"></div>
-<button class="add-btn" onclick="addTP('Purchase')">+ Add Touchpoint</button>
-</div>
-<div class="stage">
-<h3>Usage</h3>
-<p class="lead">Drive optimization, adoption, and performance tracking through proactive support.</p>
-<div class="touchpoints" id="usage"></div>
-<button class="add-btn" onclick="addTP('Usage')">+ Add Touchpoint</button>
-</div>
-<div class="stage">
-<h3>Renewal/Expansion</h3>
-<p class="lead">Leverage insights for upselling, cross-selling, and long-term growth.</p>
-<div class="touchpoints" id="renewal"></div>
-<button class="add-btn" onclick="addTP('Renewal/Expansion')">+ Add Touchpoint</button>
-</div>
-</div>
-</div>
-<div class="card">
-<span class="badge" style="background:linear-gradient(90deg,#22c55e,#4ade80)">2 • Summary Table</span>
-<h2>Touchpoint Activity Overview</h2>
-<p class="lead">View and manage all touchpoints, activities, and timelines in one place.</p>
-<table id="summaryTable">
-<thead><tr><th>Stage</th><th>Touchpoint</th><th>Activity</th><th>Timeline</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
-<div class="foot"><div>LeapToSuccess © 2025 • Customer Journey Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="customer-journey">Print / Save this Section</button></div>
-</section>
-</div>
+
 <script>
-    // Global function to clear all form fields
-    function clearFields(){
-        document.querySelectorAll('textarea,input').forEach(el=>{ el.value=''; });
-        document.querySelectorAll('select').forEach(el=>{ el.selectedIndex=0; });
-        // Clear dynamically added rows/fields for Customer Journey
-        document.querySelectorAll('.touchpoints').forEach(tp=>tp.innerHTML='');
-        document.querySelector('#summaryTable tbody').innerHTML='';
-    }
-
-    // Global script for smooth scrolling navigation
-    document.querySelectorAll('.nav-list a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        });
-    });
-
-    
-    // Left sidebar toggle for mobile
-    (function(){
-      const nav = document.querySelector('.side-nav');
-      const toggle = document.querySelector('.side-toggle');
-      const scrim = document.getElementById('side-scrim');
-      if(toggle && nav && scrim){
-        const setState = (open) => {
-          nav.classList.toggle('open', open);
-          scrim.classList.toggle('show', open);
-          toggle.setAttribute('aria-expanded', String(!!open));
-        };
-        toggle.addEventListener('click', ()=> setState(!nav.classList.contains('open')));
-        scrim.addEventListener('click', ()=> setState(false));
-      }
-    })();
-
-    // Customer Journey Mapping specific functions (Adapted for global use)
-    function addTP(stageName){
-        const stageId = stageName.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const container = document.getElementById(stageId);
-        if (!container) return; 
-
-        const row = document.createElement('div');
-        row.classList.add('tp-row');
-        row.innerHTML=`
-            <input placeholder='Touchpoint name'/>
-            <input placeholder='Activity'/>
-            <input placeholder='Timeline (e.g., Wk 2)'/>
-            <button style="background:#22c55e;border:none;border-radius:8px;color:#111827;font-weight:700;cursor:pointer" onclick="addToSummary('${stageName}', this)">Add</button>
-        `;
-        container.appendChild(row);
-    }
-
-    function addToSummary(stage, btn){
-        const inputs = btn.parentElement.querySelectorAll('input');
-        const tp = inputs[0].value; const act = inputs[1].value; const time = inputs[2].value;
-        if(!tp) return alert('Enter a touchpoint name first.');
-        
-        const table = document.getElementById('summaryTable').querySelector('tbody');
-        const row = document.createElement('tr');
-        row.innerHTML=`<td>${stage}</td><td>${tp}</td><td>${act}</td><td>${time}</td>`;
-        table.appendChild(row);
-        
-        // Clear the inputs in the dynamic row after adding to summary table
-        inputs.forEach(i=>i.value='');
-    }
-
-    // Scrollspy for left sidebar active state
-    (function(){
-      const navLinks = Array.from(document.querySelectorAll('aside.side-nav .nav-vertical a'));
-      const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-      const setActive = () => {
-        const y = window.scrollY + 160;
-        let current = sections[0] && sections[0].id;
-        sections.forEach(sec => {
-          const top = sec.getBoundingClientRect().top + window.scrollY;
-          if (y >= top) current = sec.id;
-        });
-        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
-      };
-      window.addEventListener('scroll', setActive, { passive: true });
-      window.addEventListener('load', setActive);
-    })();
-    
-// Print only this section, with textarea expansion preserved
+// Role/Team from URL params + local autosave + print-this-section
 (function(){
+  const p = new URLSearchParams(location.search);
+  const team = (p.get('team')||'T1').toUpperCase();
+  const role = (p.get('role')||'participant').toLowerCase();
+  const banner = document.querySelector('.role-banner .info');
+  if (banner) banner.innerHTML = 'Workspace: <strong>' + team + '</strong> • Role: <strong>' + role + '</strong>';
+  const NS = 'KAM:' + team + ':' + role + ':';
+
+  function restore(){
+    const els = document.querySelectorAll('textarea,input,select');
+    els.forEach((el, idx)=>{
+      const key = NS + (el.name || el.id || ('el' + idx));
+      const val = localStorage.getItem(key);
+      if(val !== null){ el.value = val; }
+    });
+  }
+  let t;
+  function saveNow(el, idx){
+    const key = NS + (el.name || el.id || ('el' + idx));
+    try{ localStorage.setItem(key, el.value); }catch(e){}
+  }
+  function onChange(e){
+    if(!e.target.matches('textarea,input,select')) return;
+    const els = [...document.querySelectorAll('textarea,input,select')];
+    const idx = els.indexOf(e.target);
+    clearTimeout(t); t = setTimeout(()=> saveNow(e.target, idx), 180);
+  }
+  document.addEventListener('input', onChange, true);
+  document.addEventListener('change', onChange, true);
+  window.addEventListener('load', restore);
+
   function printSectionById(id){
     const sec = document.getElementById(id);
     if(!sec) return;
-    // Clone section so we don't alter layout; give it id 'print-target'
     const clone = sec.cloneNode(true);
     clone.id = 'print-target';
     document.body.appendChild(clone);
@@ -725,74 +124,8 @@
     const btn = e.target.closest('button[data-print-section]');
     if(!btn) return;
     e.preventDefault();
-    const id = btn.getAttribute('data-print-section');
-    printSectionById(id);
+    printSectionById(btn.getAttribute('data-print-section'));
   });
-})();
-
-// ===== Team/Role awareness & namespaced autosave =====
-(function(){
-  function getParams(){
-    const p = new URLSearchParams(location.search);
-    return {
-      team: (p.get('team')||'T1').toUpperCase(),
-      role: (p.get('role')||'participant').toLowerCase()
-    };
-  }
-  const {team, role} = getParams();
-  // Banner text + Home
-  const banner = document.querySelector('.role-banner');
-  if (banner){
-    banner.innerHTML = '<span class="info">Workspace: <strong>' + team + '</strong> • Role: <strong>' + role + '</strong></span>' +
-                       '<a class="home" href="KAM_Landing.html">⇦ Back to Teams</a>';
-  }
-
-  // Namespace key
-  const NS = 'KAM:' + team + ':' + role + ':';
-
-  // Restore function
-  function restore(){
-    document.querySelectorAll('textarea,input,select').forEach((el, idx)=>{
-      const key = NS + (el.name || el.id || ('el' + idx));
-      const val = localStorage.getItem(key);
-      if(val !== null){
-        if(el.tagName === 'SELECT'){
-          Array.from(el.options).forEach((o,i)=>{ if(o.value === val) el.selectedIndex = i; });
-        } else {
-          el.value = val;
-        }
-      }
-    });
-  }
-
-  // Debounced save
-  let t;
-  function saveNow(el, idx){
-    const key = NS + (el.name || el.id || ('el' + idx));
-    const val = el.value;
-    try{ localStorage.setItem(key, val); }catch(e){ /* quota */ }
-  }
-  function onChange(e){
-    if(!e.target.matches('textarea,input,select')) return;
-    const els = Array.from(document.querySelectorAll('textarea,input,select'));
-    const idx = els.indexOf(e.target);
-    clearTimeout(t); t = setTimeout(()=> saveNow(e.target, idx), 200);
-  }
-
-  document.addEventListener('input', onChange, true);
-  document.addEventListener('change', onChange, true);
-  window.addEventListener('load', restore);
-
-  // Helper for clearing only this workspace (keeps others)
-  window.clearThisWorkspace = function(){
-    const keys = Object.keys(localStorage);
-    keys.forEach(k=>{ if(k.startsWith(NS)) localStorage.removeItem(k); });
-    // Also clear summary table rows for journey
-    const tbody = document.querySelector('#summaryTable tbody');
-    if(tbody) tbody.innerHTML='';
-    document.querySelectorAll('.touchpoints').forEach(tp=>tp.innerHTML='');
-    document.querySelectorAll('textarea,input').forEach(el=> el.value='');
-  };
 })();
 </script>
 </body>
