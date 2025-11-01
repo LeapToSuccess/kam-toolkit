@@ -159,7 +159,34 @@
         box-shadow: 0 0 0 2px rgba(184, 13, 13, 0.25) inset;
         color: #ffffff;
     }
-    </style>
+    
+/* ---------- Print rules: print ONLY the selected section ---------- */
+@media print{
+  /* Ensure brand colors render */
+  *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  /* Hide everything by default */
+  body *{ visibility: hidden !important; }
+  /* Show only the selected section and its children */
+  body[data-print] section.hero{ display:none !important; }
+  body[data-print] section.hero#print-target{ display:block !important; }
+  body[data-print] section.hero#print-target, 
+  body[data-print] section.hero#print-target *{ visibility: visible !important; }
+  /* Place print target at top-left for clean page output */
+  section.hero#print-target{ position: absolute; left: 0; top: 0; right:0; margin:0; box-shadow:none; }
+  /* Keep cards intact across pages */
+  .card, .panel, .pbox, .box, .stage{ break-inside: avoid; page-break-inside: avoid; }
+  /* Textareas: expand and wrap content for printing */
+  textarea{ height:auto !important; overflow:visible !important; white-space:pre-wrap !important; }
+  /* Tables: allow wrapping */
+  th, td{ white-space:normal !important; }
+  /* Hide nav/sidebar, buttons */
+  .side-nav, .side-toggle, .side-scrim, .btn.ghost, .nav-bar{ display:none !important; }
+  /* Backgrounds */
+  body{ background:#0f172a !important; }
+  .hero{ background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03)) !important; }
+  .shine{ display:none !important; } /* optional, remove if you want shine printed */
+}
+</style>
 </head>
 <body>
 <button aria-controls="left-nav" aria-expanded="false" class="side-toggle">☰ Menu</button>
@@ -213,7 +240,7 @@
 <textarea placeholder="Success measures, risks, and dependencies..." style="margin-top:10px"></textarea>
 </article>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Stakeholder Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Stakeholder Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="stakeholder">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="kam-competitors">
 <div id="opportunities"></div>
@@ -260,7 +287,7 @@
 </div>
 <textarea placeholder="Bridging question: Which pain, if solved, unlocks the most enterprise value AND differentiates us vs. competitors? What is the smallest proof‑of‑value we can run in 30–45 days?" style="margin-top:10px"></textarea>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • KAM Competitors, Goals &amp; Pain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • KAM Competitors, Goals &amp; Pain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="kam-competitors">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="differentiation">
 <div class="shine"></div>
@@ -299,7 +326,7 @@
 <p class="lead">Turn insights into a crisp narrative that sellers can repeat.</p>
 <textarea placeholder="Message builder: For [buyer], who needs [goal], our [capability] delivers [measurable outcome] because [proof]. Unlike [competitor], we [unique advantage]."></textarea>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Differentiation &amp; Value Proposition Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Differentiation &amp; Value Proposition Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="differentiation">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="joint-value">
 <div class="shine"></div>
@@ -330,7 +357,7 @@
 <div class="flow-step"><h4>Partnership Growth</h4><textarea placeholder="Expanding the strategic relationship: What additional areas can we scale together?"></textarea></div>
 </div>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Joint Value Alignment Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Joint Value Alignment Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="joint-value">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="qbr-planning">
 <div class="shine"></div>
@@ -381,7 +408,7 @@
 </table>
 <textarea placeholder="Leading questions: Which QBR takeaways require immediate action? How do we track and celebrate progress before the next QBR?" style="margin-top:10px"></textarea>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • QBR Performance &amp; Action Planning Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • QBR Performance &amp; Action Planning Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="qbr-planning">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="swot-pestle">
 <div class="shine"></div>
@@ -411,7 +438,7 @@
 <div class="pbox Env"><div class="head"><div class="letter">E</div><strong>Environmental</strong></div><textarea placeholder="Sustainability targets, climate risks, packaging, circular economy..."></textarea></div>
 </div>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • KAM SWOT &amp; PESTLE Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • KAM SWOT &amp; PESTLE Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="swot-pestle">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="risk-register">
 <div class="shine"></div>
@@ -455,7 +482,7 @@
 </table>
 <textarea placeholder="Leading questions: How do we verify that mitigation efforts are effective? What follow-up cadence ensures continuous risk monitoring?" style="margin-top:10px"></textarea>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Risk Register &amp; Mitigation Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Risk Register &amp; Mitigation Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="risk-register">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="competitive-benchmarking">
 <div class="shine"></div>
@@ -488,7 +515,7 @@
 <div class="box"><h3>Improvement Opportunities</h3><p class="lead">Gaps where competitors have an advantage – areas requiring strategic attention.</p><textarea placeholder="Which areas create risk or lost deals? What short-term and long-term actions fix these?"></textarea></div>
 </div>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Competitive Benchmarking Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Competitive Benchmarking Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="competitive-benchmarking">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="value-chain">
 <div class="shine"></div>
@@ -520,7 +547,7 @@
 <p class="lead">Translate analysis into action — uncover opportunity zones for solution alignment, differentiation, and relationship strengthening.</p>
 <textarea placeholder="Leading questions: Which activity represents the biggest partnership potential? How can we align our value proposition across both primary and support functions? What internal story should the client tell about us after this discovery?"></textarea>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Porter's Value Chain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Porter's Value Chain Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="value-chain">Print / Save this Section</button></div>
 </section>
 <section class="hero" id="customer-journey">
 <div class="shine"></div>
@@ -573,7 +600,7 @@
 <tbody></tbody>
 </table>
 </div>
-<div class="foot"><div>LeapToSuccess © 2025 • Customer Journey Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div></div>
+<div class="foot"><div>LeapToSuccess © 2025 • Customer Journey Mapping Canvas</div><div><button class="btn" onclick="window.print()">Print / Save as PDF</button><button class="btn ghost" onclick="clearFields()">Clear Inputs</button></div><button class="btn" data-print-section="customer-journey">Print / Save this Section</button></div>
 </section>
 </div>
 <script>
@@ -661,6 +688,31 @@
       window.addEventListener('scroll', setActive, { passive: true });
       window.addEventListener('load', setActive);
     })();
-    </script>
+    
+// Print only this section, with textarea expansion preserved
+(function(){
+  function printSectionById(id){
+    const sec = document.getElementById(id);
+    if(!sec) return;
+    // Clone section so we don't alter layout; give it id 'print-target'
+    const clone = sec.cloneNode(true);
+    clone.id = 'print-target';
+    document.body.appendChild(clone);
+    document.body.setAttribute('data-print','1');
+    window.print();
+    setTimeout(()=>{
+      document.body.removeAttribute('data-print');
+      if(clone && clone.parentNode) clone.parentNode.removeChild(clone);
+    }, 0);
+  }
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-print-section]');
+    if(!btn) return;
+    e.preventDefault();
+    const id = btn.getAttribute('data-print-section');
+    printSectionById(id);
+  });
+})();
+</script>
 </body>
 </html>
